@@ -3,7 +3,7 @@ interface IUser {
     _id: string,
     analysis: number,
     unicash: number,
-    lastVoted: object,
+    lastVoted: object | any,
     limitBot: number,
     blacklist: boolean,
     transactions: Map<String, Object>,
