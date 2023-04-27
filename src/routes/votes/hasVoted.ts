@@ -23,7 +23,7 @@ export default async function hasVoted(req: Request, res: Response) {
         })
 
         const time = Date.now() - userData.lastVoted.timestamp
-        if(compare === userData.lastVoted.botId && time < Date.now()) return res.status(200).send({
+        if(compare === userData.lastVoted.botId && time > 18000000) return res.status(200).send({
             "condition": true
         })
         return res.status(200).send({

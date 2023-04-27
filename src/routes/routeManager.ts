@@ -1,6 +1,6 @@
 import Express  from "express";
 import hasVoted from "./votes/hasVoted";
-import getBotInfo from "./votes/getBotInfo";
+import getBotInfo from "./botlist/getBotInfo";
 import getPositionInRank from "./votes/getPositionInRank";
 const router = Express.Router()
 

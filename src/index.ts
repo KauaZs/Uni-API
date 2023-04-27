@@ -17,6 +17,7 @@ app.get('/', (req: Request, res: Response) => {
 app.listen(3000, () => {
     console.log(color.yellow('[ API-STATS ]') + color.rainbow(' Online'))
 })
+
 new Database(process.env.MONGOSRV).connectDatabase()
 
 app.use('/api', router)
