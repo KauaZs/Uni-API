@@ -6,7 +6,8 @@ interface IGuild {
     prefix: string,
     reminders: Map<Object, String>,
     suggestion: Map<Object, String>,
-    checkers: object
+    checkers: object,
+    apiKey: Map<Object, String>
 }
 const guildSchema = new Schema<IGuild>({
   _id: { require: true, type: String },
@@ -14,6 +15,7 @@ const guildSchema = new Schema<IGuild>({
   prefix: { type: String, default: 'u!' },
   reminders: { type: Map, of: Object, default: new Map() },
   suggestion: { type: Map, of: Object, default: new Map() },
+  apiKey: { type: Map, of: Object, default: new Map() },
   checkers: {
     users: { type: Map, of: Object, default: new Map() },
     config: {

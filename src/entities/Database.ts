@@ -36,4 +36,16 @@ export default class DatabaseManager {
         const guildData = await Guild.findById(this.guildID)
         return guildData?.bots || new Array()
     }
+
+    async getKey(key: string | any) {
+        const guildData = await Guild.findById(this.guildID)
+        return guildData?.apiKey.get(key) || false
+    }
+
+    async addIP(ip: string | any, apiKey: string | any) {
+        await Guild.updateOne({_id: this.guildID}, {
+            $push: {[`apiKey.${apiKey}.ips`]: ip}
+        })
+        return true
+    }
 }

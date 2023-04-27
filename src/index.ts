@@ -3,6 +3,7 @@ import color from 'colors';
 import Database from './entities/Database'
 import dotenv from 'dotenv'
 import router from './routes/routeManager';
+import keyIsValid from './routes/key/verifyKey';
 
 dotenv.config()
 
@@ -20,4 +21,9 @@ app.listen(3000, () => {
 
 new Database(process.env.MONGOSRV).connectDatabase()
 
+app.use(keyIsValid)
 app.use('/api', router)
+
+app.use((req: Request, res: Response) => {
+    res.status(404).send({'error':'Rota não encontrada. Acesse nosso discord para obter ajuda.'});
+  });

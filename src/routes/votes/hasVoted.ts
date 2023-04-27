@@ -28,7 +28,7 @@ export default async function hasVoted(req: Request, res: Response) {
         })
         return res.status(200).send({
             "condition": false
-        })
+        })  
     }
     res.status(200).send(userData.lastVoted)
 }
