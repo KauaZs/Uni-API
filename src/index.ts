@@ -15,7 +15,7 @@ app.get('/', (req: Request, res: Response) => {
     })
 })
 
-app.listen(3000, () => {
+app.listen(80, () => {
     console.log(color.yellow('[ API-STATS ]') + color.rainbow(' Online'))
 })
 

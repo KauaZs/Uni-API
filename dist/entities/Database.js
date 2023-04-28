@@ -50,5 +50,19 @@ class DatabaseManager {
             return (guildData === null || guildData === void 0 ? void 0 : guildData.bots) || new Array();
         });
     }
+    getKey(key) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const guildData = yield Guild_1.default.findById(this.guildID);
+            return (guildData === null || guildData === void 0 ? void 0 : guildData.apiKey.get(key)) || false;
+        });
+    }
+    addIP(ip, apiKey) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield Guild_1.default.updateOne({ _id: this.guildID }, {
+                $push: { [`apiKey.${apiKey}.ips`]: ip }
+            });
+            return true;
+        });
+    }
 }
 exports.default = DatabaseManager;

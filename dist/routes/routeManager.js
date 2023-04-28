@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const hasVoted_1 = __importDefault(require("./votes/hasVoted"));
-const getBotInfo_1 = __importDefault(require("./votes/getBotInfo"));
+const getBotInfo_1 = __importDefault(require("./botlist/getBotInfo"));
 const getPositionInRank_1 = __importDefault(require("./votes/getPositionInRank"));
 const router = express_1.default.Router();
 router.get('/hasvoted', hasVoted_1.default);

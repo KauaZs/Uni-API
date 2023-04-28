@@ -12,40 +12,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
 const Database_1 = __importDefault(require("../../entities/Database"));
-function hasVoted(req, res) {
+const dotenv_1 = __importDefault(require("dotenv"));
+function keyIsValid(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         dotenv_1.default.config();
-        const Database = new Database_1.default(process.env.MONGOSRV);
         const query = req === null || req === void 0 ? void 0 : req.query;
-        const userID = query === null || query === void 0 ? void 0 : query.userID;
-        const compare = query === null || query === void 0 ? void 0 : query.compareBotID;
-        if (!userID)
+        const key = query === null || query === void 0 ? void 0 : query.apiKey;
+        if (!key)
+            return res.status(401).send({
+                "error": "the key has not been set"
+            });
+        const db = new Database_1.default(process.env.MONGOSRV);
+        const keyGet = yield db.getKey(key);
+        if (!keyGet)
+            return res.status(401).send({
+                "error": "invalid key"
+            });
+        const ip = req.socket.remoteAddress;
+        const registeredIp = keyGet.ips.includes(ip);
+        if (!registeredIp && registeredIp.length > 2 && keyGet.type === 'comum')
             return res.status(400).send({
-                "error": "O ID do user nao foi definido."
+                "error": "the key exceeded the registered ip limit"
             });
-        const userData = yield Database.findUser(userID);
-        if (!userData)
+        if (!registeredIp && keyGet.type === 'booster' && registeredIp.length > 6)
             return res.status(400).send({
-                "error": "O usuario nao foi encontrado!"
+                "error": "the key exceeded the registered ip limit"
             });
-        if (compare) {
-            const botData = yield Database.findBot(compare);
-            if (!botData)
-                return res.status(400).send({
-                    "error": "O ID do bot a ser comparado nao foi encontrado"
-                });
-            const time = Date.now() - userData.lastVoted.timestamp;
-            if (compare === userData.lastVoted.botId && time > 18000000)
-                return res.status(200).send({
-                    "condition": true
-                });
-            return res.status(200).send({
-                "condition": false
-            });
+        if (!registeredIp) {
+            yield db.addIP(ip, key);
         }
-        res.status(200).send(userData.lastVoted);
+        next();
     });
 }
-exports.default = hasVoted;
+exports.default = keyIsValid;
