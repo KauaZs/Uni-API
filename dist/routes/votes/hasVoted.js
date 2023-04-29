@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
 const Database_1 = __importDefault(require("../../entities/Database"));
+const ms_1 = __importDefault(require("ms"));
 function hasVoted(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         dotenv_1.default.config();
@@ -37,9 +38,11 @@ function hasVoted(req, res) {
                     "error": "O ID do bot a ser comparado nao foi encontrado"
                 });
             const time = Date.now() - userData.lastVoted.timestamp;
-            if (compare === userData.lastVoted.botId && time > 18000000)
+            if (compare === userData.lastVoted.botId && time < 18000000)
                 return res.status(200).send({
-                    "condition": true
+                    "condition": true,
+                    "timestamp": userData.lastVoted.timestamp,
+                    "formatedTime": (0, ms_1.default)(~~(18000000 - time))
                 });
             return res.status(200).send({
                 "condition": false

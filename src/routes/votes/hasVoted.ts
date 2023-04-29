@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import dotenv from 'dotenv'
 import DatabaseManager from "../../entities/Database";
+import ms from 'ms'
 export default async function hasVoted(req: Request, res: Response) {
     dotenv.config()
     const Database = new DatabaseManager(process.env.MONGOSRV)
@@ -23,8 +24,10 @@ export default async function hasVoted(req: Request, res: Response) {
         })
 
         const time = Date.now() - userData.lastVoted.timestamp
-        if(compare === userData.lastVoted.botId && time > 18000000) return res.status(200).send({
-            "condition": true
+        if(compare === userData.lastVoted.botId && time < 18000000) return res.status(200).send({
+            "condition": true,
+            "timestamp": userData.lastVoted.timestamp,
+            "formatedTime": ms(~~(18000000 - time))
         })
         return res.status(200).send({
             "condition": false

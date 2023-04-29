@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
         "message": "Precisa de ajuda? acesse nosso discord (https://discord.gg/cqExFuZpXe)"
     });
 });
-app.listen(3000, () => {
+app.listen(80, () => {
     console.log(colors_1.default.yellow('[ API-STATS ]') + colors_1.default.rainbow(' Online'));
 });
 new Database_1.default(process.env.MONGOSRV).connectDatabase();
