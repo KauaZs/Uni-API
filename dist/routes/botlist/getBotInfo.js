@@ -22,14 +22,16 @@ function getBotInfo(req, res) {
         const botID = query === null || query === void 0 ? void 0 : query.botID;
         if (!botID)
             return res.status(400).send({
-                "error": "O ID do bot nao foi definido."
+                "error": "O ID do bot nao foi definido.",
+                "stats": false
             });
         const botData = yield Database.findBot(botID);
         if (!botData)
             return res.status(400).send({
-                "error": "O bot nao foi encontrado!"
+                "error": "O bot nao foi encontrado!",
+                "stats": false
             });
-        res.status(200).send(botData);
+        res.status(200).send(Object.assign(botData, { "stats": true }));
     });
 }
 exports.default = getBotInfo;

@@ -4,6 +4,7 @@ import Database from './entities/Database'
 import dotenv from 'dotenv'
 import router from './routes/routeManager';
 import keyIsValid from './routes/key/verifyKey';
+import helmet, {HelmetOptions} from 'helmet';
 
 dotenv.config()
 
@@ -15,11 +16,37 @@ app.get('/', (req: Request, res: Response) => {
     })
 })
 
-app.listen(80, () => {
+app.listen(3000, () => {
     console.log(color.yellow('[ API-STATS ]') + color.rainbow(' Online'))
 })
 
 new Database(process.env.MONGOSRV).connectDatabase()
+
+interface HelmetOGOptions {
+    title: string;
+    description: string;
+    image: string;
+    url: string;
+  }
+  
+  declare module 'helmet' {
+    interface HelmetOptions {
+      og?: HelmetOGOptions;
+    }
+  }
+  
+
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      og: {
+        title: 'UNI-API',
+        description: 'Uni-API é uma api d focada no servidor union lab & botlist',
+        image: 'https://cdn.discordapp.com/icons/943650628499013722/a5354a93747145a782947dfc28531af0.png?size=2048',
+        url: 'https://uni-api.squareweb.app',
+      },
+    })
+  );
 
 app.use(keyIsValid)
 app.use('/api', router)

@@ -21,23 +21,27 @@ function keyIsValid(req, res, next) {
         const key = query === null || query === void 0 ? void 0 : query.apiKey;
         if (!key)
             return res.status(401).send({
-                "error": "the key has not been set"
+                "error": "the key has not been set",
+                "stats": false
             });
         const db = new Database_1.default(process.env.MONGOSRV);
         const keyGet = yield db.getKey(key);
         if (!keyGet)
             return res.status(401).send({
-                "error": "invalid key"
+                "error": "invalid key",
+                "stats": false
             });
-        const ip = req.socket.remoteAddress;
+        const ip = req.socket.remoteAddress || req.ip;
         const registeredIp = keyGet.ips.includes(ip);
         if (!registeredIp && registeredIp.length > 2 && keyGet.type === 'comum')
             return res.status(400).send({
-                "error": "the key exceeded the registered ip limit"
+                "error": "the key exceeded the registered ip limit",
+                "stats": false
             });
         if (!registeredIp && keyGet.type === 'booster' && registeredIp.length > 6)
             return res.status(400).send({
-                "error": "the key exceeded the registered ip limit"
+                "error": "the key exceeded the registered ip limit",
+                "stats": false
             });
         if (!registeredIp) {
             yield db.addIP(ip, key);

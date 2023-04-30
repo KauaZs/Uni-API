@@ -24,27 +24,32 @@ function hasVoted(req, res) {
         const compare = query === null || query === void 0 ? void 0 : query.compareBotID;
         if (!userID)
             return res.status(400).send({
-                "error": "O ID do user nao foi definido."
+                "error": "O ID do user nao foi definido.",
+                "stats": false
             });
         const userData = yield Database.findUser(userID);
         if (!userData)
             return res.status(400).send({
-                "error": "O usuario nao foi encontrado!"
+                "error": "O usuario nao foi encontrado!",
+                "stats": false
             });
         if (compare) {
             const botData = yield Database.findBot(compare);
             if (!botData)
                 return res.status(400).send({
-                    "error": "O ID do bot a ser comparado nao foi encontrado"
+                    "error": "O ID do bot a ser comparado nao foi encontrado",
+                    "stats": false
                 });
             const time = Date.now() - userData.lastVoted.timestamp;
             if (compare === userData.lastVoted.botId && time < 18000000)
                 return res.status(200).send({
+                    "stats": true,
                     "condition": true,
                     "timestamp": userData.lastVoted.timestamp,
-                    "formatedTime": (0, ms_1.default)(~~(18000000 - time))
+                    "formatedTime": (0, ms_1.default)(~~(userData.lastVoted.timestamp - 18000000))
                 });
             return res.status(200).send({
+                "stats": true,
                 "condition": false
             });
         }

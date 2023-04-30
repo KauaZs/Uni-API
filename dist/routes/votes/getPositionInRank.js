@@ -22,18 +22,21 @@ function getPositionInRank(req, res) {
         const botID = query === null || query === void 0 ? void 0 : query.botID;
         if (!botID)
             return res.status(400).send({
-                "error": "O ID do bot nao foi definido."
+                "error": "O ID do bot nao foi definido.",
+                "stats": false
             });
         const botData = yield Database.findBot(botID);
         if (!botData)
             return res.status(400).send({
-                "error": "O bot nao foi encontrado!"
+                "error": "O bot nao foi encontrado!",
+                "stats": false
             });
         const data = yield Database.getBotsVotes();
         const bots = [...data];
         const sortedBots = bots.sort((a, b) => b[1].votes - a[1].votes);
         return res.status(200).send({
-            pos: sortedBots.findIndex((x, y) => x[0] === botID) + 1
+            "pos": sortedBots.findIndex((x, y) => x[0] === botID) + 1,
+            "stats": true
         });
     });
 }
