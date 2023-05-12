@@ -1,6 +1,6 @@
 <img src="https://cdn.discordapp.com/avatars/997314418998255667/afadf2fc024dceb4b53b7acd89fd5dc0.webp" alt="Uni-API Logo" width="100" height="auto"/>
 <h1> Uni-API </h1>
-<b>Uni-API</b> é uma api criada para o servidor <a href=https://discord.gg/cqExFuZpXe> Union Lab </a>, com a finalidade de ajudar a comunidade.
+<b>Uni-API</b> é uma api criada para o servidor <a href=https://discord.gg/cqExFuZpXe> Union Lab </a>, com a finalidade de ajudar a comunidadea gerenciar seus bots.
 
 ## Exemplo de como usar: 
 ```js
