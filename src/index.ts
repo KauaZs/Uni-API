@@ -4,7 +4,7 @@ import Database from './entities/Database'
 import dotenv from 'dotenv'
 import router from './routes/routeManager';
 import keyIsValid from './routes/key/verifyKey';
-
+import cors from 'cors'
 dotenv.config()
 
 const app = express()
@@ -21,6 +21,7 @@ app.listen(3000, () => {
 
 new Database(process.env.MONGOSRV).connectDatabase()
 
+app.use(cors())
 
 app.use(keyIsValid)
 app.use('/api', router)
